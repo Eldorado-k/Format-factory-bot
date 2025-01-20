@@ -13,8 +13,8 @@ from .uploads import upload_worker
 
 output = InlineKeyboardMarkup([
     [
-        InlineKeyboardButton("👨‍💻 Développeur", url="https://github.com/WeebTime/"),
-        InlineKeyboardButton("📦 Code Source", url="https://github.com/WeebTime/Video-Encoder-Bot")
+        InlineKeyboardButton("👨‍💻 Développeur", url="https://github.com/kalebavincent/"),
+        InlineKeyboardButton("📦 Code Source", url="https://github.com/kalebavincent/Format-factory-bot.git")
     ]
 ])
 
@@ -24,8 +24,8 @@ start_but = InlineKeyboardMarkup([
         InlineKeyboardButton("⚙️ Paramètres", callback_data="OpenSettings")
     ],
     [
-        InlineKeyboardButton("👨‍💻 Développeur", url="https://github.com/WeebTime/"),
-        InlineKeyboardButton("📦 Code Source", url="https://github.com/WeebTime/Video-Encoder-Bot")
+        InlineKeyboardButton("👨‍💻 Développeur", url="https://github.com/kalebavincent/"),
+        InlineKeyboardButton("📦 Code Source", url="https://github.com/kalebavincent/Format-factory-bot.git")
     ]
 ])
 

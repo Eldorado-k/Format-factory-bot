@@ -28,7 +28,7 @@ async def OpenSettings(event: Message, user_id: int):
                         ],
                         [
                             InlineKeyboardButton("🔄 Réinitialiser", callback_data="ResetSettings"),
-                            InlineKeyboardButton("📖 Aide", url="https://t.me/HokageMovieHelp")
+                            InlineKeyboardButton("📖 Aide", url="https://t.me/hyoshcoder")
                         ]
                     ]
                 )
