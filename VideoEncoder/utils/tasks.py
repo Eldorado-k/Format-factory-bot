@@ -1,19 +1,3 @@
-# VideoEncoder - a telegram bot for compressing/encoding videos in h264/h265 format.
-# Copyright (c) 2021 WeebTime/VideoEncoder
-#
-# This program is free software: you can redistribute it and/or modify
-# it under the terms of the GNU Affero General Public License as published
-# by the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU Affero General Public License for more details.
-#
-# You should have received a copy of the GNU Affero General Public License
-# along with this program.  If not, see <https://www.gnu.org/licenses/>.
-
 import asyncio
 import html
 import os
@@ -48,16 +32,13 @@ def direct_link_generator(url):
     à l'API ou aux services que tu utilises.
     """
     if 'drive.google.com' in url:
-        # Exemple pour Google Drive : Extraire l'ID du fichier et générer un lien direct
         file_id = _get_file_id(url)
         direct_url = f'https://drive.google.com/uc?id={file_id}&export=download'
         return direct_url
     elif 'dropbox.com' in url:
-        # Exemple pour Dropbox : rediriger vers le lien direct
         return url.replace('www.dropbox.com', 'dl.dropboxusercontent.com')
     else:
-        # Pour d'autres types d'URL, il te faudra peut-être ajouter des conditions supplémentaires
-        return url  # Retourne l'URL telle quelle si aucune conversion n'est effectuée
+        return url 
 
 
 async def on_task_complete():
@@ -80,41 +61,36 @@ async def on_task_complete():
                 return
         await handle_tasks(message, 'tg')
 
-
 async def handle_tasks(message, mode):
     try:
         msg = await message.reply_text("<b>💠 Téléchargement...</b>")
         if mode == 'tg':
-            await tg_task(message, msg)
+            filepath = await handle_tg_down(message, msg)
+            if filepath.endswith(".temp"):
+                final_filepath = filepath.replace(".temp", ".mp4")
+                os.rename(filepath, final_filepath)
+                filepath = final_filepath
+            await msg.edit('Encodage...')
+            await handle_encode(filepath, message, msg)
         elif mode == 'url':
             await url_task(message, msg)
         else:
             await batch_task(message, msg)
-    except MessageNotModified:
-        pass
-    except IndexError:
-        return
-    except MessageIdInvalid:
-        await msg.edit('Téléchargement Annulé!')
-    except FileNotFoundError:
-        LOGGER.error('[FileNotFoundError]: File not found!')
     except Exception as e:
         await message.reply(text=f"Erreur! <code>{e}</code>")
     finally:
         await on_task_complete()
 
-
 async def tg_task(message, msg):
     filepath = await handle_tg_down(message, msg)
+    print(filepath)
     await msg.edit('Encodage...')
     await handle_encode(filepath, message, msg)
-
 
 async def url_task(message, msg):
     filepath = await handle_download_url(message, msg, False)
     await msg.edit_text("Encodage...")
     await handle_encode(filepath, message, msg)
-
 
 async def batch_task(message, msg):
     if message.reply_to_message:
@@ -178,7 +154,6 @@ async def batch_task(message, msg):
         first_index = thing
     await msg.edit('Encodage terminé! Liens: {}'.format(first_index.link), disable_web_page_preview=True)
 
-
 async def handle_download_url(message, msg, batch):
     url = message.text.split(None, 1)[1].strip()
     if 'drive.google.com' in url:
@@ -203,7 +178,6 @@ async def handle_download_url(message, msg, batch):
         await handle_url(url, filepath, msg)
     return filepath
 
-
 async def handle_tg_down(message, msg, mode='no_reply'):
     c_time = time.time()
     if mode == 'no_reply':
@@ -219,4 +193,11 @@ async def handle_tg_down(message, msg, mode='no_reply'):
                 progress_args=("Téléchargement...", msg, c_time))
         else:
             return None
-    return path
+    
+    temp_path = path + ".temp"  
+    final_path = path 
+    
+    if os.path.exists(temp_path):
+        os.rename(temp_path, final_path)
+    
+    return final_path
