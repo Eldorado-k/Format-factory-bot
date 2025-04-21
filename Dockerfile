@@ -11,7 +11,6 @@ COPY . .
 ENV DEBIAN_FRONTEND=noninteractive
 ENV TZ=Asia/Kolkata
 
-# Supprimer aria2 ici ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
 RUN apt update && apt install -y --no-install-recommends \
     git wget curl busybox python3 python3-pip \
     p7zip-full p7zip-rar unzip mkvtoolnix ffmpeg
