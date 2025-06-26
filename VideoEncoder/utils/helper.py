@@ -24,8 +24,8 @@ start_but = InlineKeyboardMarkup([
         InlineKeyboardButton("⚙️ Paramètres", callback_data="OpenSettings")
     ],
     [
-        InlineKeyboardButton("👨‍💻 Développeur", url="https://github.com/kalebavincent/"),
-        InlineKeyboardButton("📦 Code Source", url="https://github.com/kalebavincent/Format-factory-bot.git")
+        InlineKeyboardButton("👨‍💻 Développeur", url="https://t.me/hyoshcoder"),
+        InlineKeyboardButton("📦 Code Source", url="https://t.me/hyoshcoder")
     ]
 ])
 
